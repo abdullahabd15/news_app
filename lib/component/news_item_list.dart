@@ -4,7 +4,7 @@ import 'package:news_app/util/date_util.dart';
 
 class NewsItemList extends StatelessWidget {
   final Article article;
-  final Function(String) onItemTapped;
+  final Function onItemTapped;
 
   const NewsItemList({this.article, this.onItemTapped});
 
@@ -12,7 +12,7 @@ class NewsItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onItemTapped.call(article.url);
+        onItemTapped.call();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
@@ -66,7 +66,7 @@ class NewsItemList extends StatelessWidget {
                             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            _getPublishedAt(article.publishedAt),
+                            DateUtil.differencePhrase(article.publishedAt),
                             style: TextStyle(fontSize: 10, color: Colors.black54),
                           ),
                         ],
@@ -80,19 +80,5 @@ class NewsItemList extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getPublishedAt(String strDateTime) {
-    var dateTime = DateUtil.convertToDateTime(strDateTime);
-    if (DateUtil.isToday(dateTime)) {
-      var diffInHours = DateUtil.differenceInHour(dateTime);
-      if (diffInHours == 0) {
-        return "${DateUtil.differenceInMinutes(dateTime)} menit yang lalu.";
-      } else {
-        return "$diffInHours jam yang lalu.";
-      }
-    } else {
-      return DateUtil.toIndonesianFormat(dateTime);
-    }
   }
 }
